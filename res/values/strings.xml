@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, ComAssistantActivity!</string>
+    <string name="app_name">智能家居—网关</string>
+
+</resources>
