@@ -96,12 +96,11 @@ public class ComAssistantActivity extends Activity {
 					return;
 				}
 //				sendToast(content);
-				/*
-				 * //用电器测试
-				 * if(content.contains("li")||content.contains("smog")||(
-				 * content.contains("h")&&!content.contains("hh"))){ return ; }
-				 */
-
+				
+				  //用电器测试
+				/* if(content.contains("li")||content.contains("smog")||(
+				  content.contains("h")&&!content.contains("hh"))){ return ; }*/
+				
 				if (content.contains("somebody")) {
 					sendMonitor("hongwai", "somebody");
 				}
@@ -154,8 +153,11 @@ public class ComAssistantActivity extends Activity {
 				if (content.contains("li")) {
 					light = content.substring(2);
 					editTextlight.setText(light);
-					if(smart&&wind&&(Double.parseDouble(light)>500||Double.parseDouble(light)<10)){
+					if(smart&&wind&&Double.parseDouble(light)<10){
 						sendPortData(ComA, "winoff");
+					}
+					if(smart&&!wind&&(Double.parseDouble(light)>250)){
+						sendPortData(ComA,"winon");
 					}
 					sendMonitor("light", light);
 				}
@@ -178,7 +180,9 @@ public class ComAssistantActivity extends Activity {
 
 				if (content.contains("aa")) {
 					home = false;
+				
 					sendControl("home", false);
+					
 				}
 				if (content.contains("bb")) {
 					sleep = false;
@@ -199,69 +203,79 @@ public class ComAssistantActivity extends Activity {
 					boolean safeNow = jsonObject.getBoolean("safe");
 					boolean homeNow = jsonObject.getBoolean("home");
 					boolean smartNow=jsonObject.getBoolean("smart");
-					if (home !=  homeNow) {
-						 home = homeNow;
+					if (homeNow) {
 						sendPortData(ComA, "home");
 					}
 					if (safe !=  safeNow) {
-						 safe = safeNow;
-						sendPortData(ComA, "safe");
+//						sendToast("安防模式"); 
+						safe = safeNow;
 					}
-					if (sleep !=  sleepNow) {
-						 sleep = sleepNow;
-
+					if (sleepNow) {
 						sendPortData(ComA, "sleep");
 					}
 					if (kled !=  kledNow) {
 						if (kledNow) {
+//							sendToast("开客厅灯");
 							sendPortData(ComA, "kledon");
 						} else {
+//							sendToast("关客厅灯");
 							sendPortData(ComA, "kledoff");
 						}
 					}
 
 					if (sled !=  sledNow) {
 						if (sledNow) {
+//							sendToast("开书房灯");
 							sendPortData(ComA, "sledon");
 						} else {
+//							sendToast("关书房灯");
 							sendPortData(ComA, "sledoff");
 						}
 					}
 					if (aled !=  aledNow) {
 						if (aledNow) {
+//							sendToast("开卧室一灯");
 							sendPortData(ComA, "aledon");
 						} else {
+							//sendToast("关卧室一灯");
 							sendPortData(ComA, "aledoff");
 						}
 					}
 					if (bled !=  bledNow) {
 						if (bledNow) {
+							//sendToast("开卧室二灯");
 							sendPortData(ComA, "bledon");
 						} else {
+							//sendToast("关卧室二灯");
 							sendPortData(ComA, "bledoff");
 						}
 					}
 					if (winNow !=  wind) {
 
 						if (winNow) {
+							//sendToast("开窗帘");
 							sendPortData(ComA, "winon");
 						} else {
+							//sendToast("关窗帘");
 							sendPortData(ComA, "winoff");
 						}
 					}
 					if (fan !=  fanNow) {
 						if (fanNow) {
+							//sendToast("开风扇");
 							sendPortData(ComA, "windon");
 						} else {
+							//sendToast("关风扇");
 							sendPortData(ComA, "windoff");
 						}
 					}
 					if(smart!=smartNow){
+						//sendToast("智能模式已切换");
 						smart=smartNow;
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					sendToast("数据解析失败");
 				}
 
 				break;
